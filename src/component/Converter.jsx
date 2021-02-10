@@ -38,13 +38,12 @@ class Converter extends Component {
       //console.log(this.state);
     event.preventDefault();
     console.log("handle submit");
-    axios({
-        method: "POST",
-        url: "https://docsconverter.demo.thinkfree.com/hermes/convert.hs",
+    axios('https://docsconverter.demo.thinkfree.com/hermes/convert.hs', {
+        method: 'post',
         headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
         },
-        data: {
+        body: {
           ignorecache: this.state.ignorecache,
           viewtype: this.state.viewtype,
           responsetype: this.state.responsetype,
@@ -54,6 +53,7 @@ class Converter extends Component {
         }
       })
       .then((response) => {
+        //document.getElementsByTagName('body')[0].innerHTML(response.getElementsByTagName('a')[0]);
         console.log(response);
       }).catch((err)=>{
           console.log(err);
@@ -62,7 +62,7 @@ class Converter extends Component {
   render() {
     return (
       <div>
-        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
+        <form encType="multipart/form-data">
           <div className="col-auto align-items-center">
             <div className="col-sm-10">
               <div className="form-group col-md-3 mb-2">
@@ -91,7 +91,7 @@ class Converter extends Component {
                   name="attachment"
               /*     onChange={this.uploadFile(this.value)} */
                 ></input>
-                <input type="submit"></input>
+                <input type="submit" onClick={this.handleSubmit}></input>
               </div>
             </div>
           </div>
