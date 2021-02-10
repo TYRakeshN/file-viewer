@@ -5,7 +5,7 @@ export default function NavBar() {
 
     <nav className="navbar navbar-light bg-light">
     <span className="navbar-text h4">
-      File Converter with Preview using Hancom DocsConverter
+      File Converter with Preview Mode
     </span>
   </nav>
   );

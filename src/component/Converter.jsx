@@ -2,7 +2,7 @@ import React, { Component } from "react";
 /* import axios from "axios"; */
 import image from './data/TyImg.png';
 import pdf from './data/Typdf.pdf';
-import text from './data/Tydoc.txt';
+import Doc from './data/Tydoc.docx';
 import FileViewer from 'react-file-viewer';
 class Converter extends Component {
   constructor(props) {
@@ -16,7 +16,8 @@ class Converter extends Component {
       fileUploaded:false,
       showImage:false,
       showPdf:false,
-      showText:false
+      showDoc:false
+
     };
   }
 
@@ -72,9 +73,9 @@ class Converter extends Component {
   fileChange=()=>{
     this.setState({fileUploaded:true})
   }
-  convertToText=()=>{
+  showFileLoaded=()=>{
     if(this.state.fileUploaded){
-        this.setState({showText:true});
+        this.setState({showDoc:true});
         this.setState({showImage:false});
         this.setState({showPdf:false})
           }else{
@@ -85,7 +86,7 @@ class Converter extends Component {
       if(this.state.fileUploaded){
     this.setState({showPdf:true});
     this.setState({showImage:false});
-    this.setState({showText:false});
+    this.setState({showDoc:false});
       }else{
           alert("pls upload file");
       }
@@ -94,7 +95,7 @@ class Converter extends Component {
     if(this.state.fileUploaded){
    this.setState({showImage:true});
    this.setState({showPdf:false});
-   this.setState({showText:false});
+   this.setState({showDoc:false});
 }else{
     alert("pls upload file");
 }
@@ -138,11 +139,11 @@ class Converter extends Component {
                 ></input>
               {/*   <input type="submit"></input> */}
               </div>
-              <input className="p-1  h5" type="button" value="View Uploaded" onClick={this.convertToHtml}></input> 
+              <input className="p-1  h5" type="button" value="View Uploaded" onClick={this.showFileLoaded}></input> 
               <input className="p-1 pr-2 ml-5  h5"  type="button" value="PDF" onClick={this.convertToPdf}></input>
-              <input className="p-1  mr-2 h5"  type="button" value="IMAGE" onClick={this.convertToImage}></input>
+              <input className="p-1 ml-5  mr-2 m-1 h5"  type="button" value="IMAGE" onClick={this.convertToImage}></input>
               
-              <input className="p-1  ml-5 h5" type="button"  value="Dowload" onClick={this.convertToText}></input>              
+             
             </div>
           </div>
         </form>
@@ -155,17 +156,39 @@ class Converter extends Component {
       <div id="show-view" className="container" >
       { this.state.showImage 
         ? 
+        <>
+        <a href={image} className="ml-2" download>
+         <i className="h4">Download File</i></a>
         <FileViewer
         fileType='png'
         filePath={image}
-        /> : null}
+        /> 
+        </>
+        : null}
         { this.state.showPdf 
             ? 
+            <>
+            <a href={pdf} className="ml-2" download>
+            <i className="h4">Download File</i></a>
             <FileViewer
             fileType='pdf'
             filePath={pdf}
-            /> : null}
+            />
            
+            </>
+            : null}
+            { this.state.showDoc 
+                ? 
+                
+                
+                <FileViewer
+                fileType='docx'
+                filePath={Doc}
+                /> 
+                
+               
+                : null}
+
       </div>
       </>
     );
