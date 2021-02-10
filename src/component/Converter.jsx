@@ -3,31 +3,66 @@ import axios from "axios";
 class Converter extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ignorecache: true,
+      viewtype: "hview",
+      responsetype: "html",
+      inputfile: "",
+      filter: "doc-pdf"
+    };
   }
 
-  uploadFile = (e) => {
-    let file = e.target.files[0];
-    console.log(file);
-    console.log("FileName-->"+file.name+ "fileType-->"+file.type);
-
-    if (file) {
-      let data = new FormData();
-      data.append("file", file);
+  /* uploadFile = (value) => {
+    //console.log("FileName-->" + file.name + "fileType-->" + file.type);
+    console.log("handle fileupload");
+    console.log("Value-->" + value);
+    if (value) {
       axios
-        .post(
-          "https://docsconverter.demo.thinkfree.com/hermes/convert.hs",
-          data
-        )
+        .post({
+          url: "https://docsconverter.demo.thinkfree.com/hermes/convert.hs",
+          data: {
+            ignorecache: this.state.ignorecache,
+            viewtype: this.state.viewtype,
+            responsetype: this.state.responsetype,
+            inputfile: this.state.inputfile,
+            filter: this.state.filter,
+            attachment: value,
+          },
+        })
         .then((response) => {
           console.log(response);
         });
     }
+  }; */
+  handleSubmit = (event) => {
+      //console.log(this.state);
+    event.preventDefault();
+    console.log("handle submit");
+    axios({
+        method: "POST",
+        url: "https://docsconverter.demo.thinkfree.com/hermes/convert.hs",
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data: {
+          ignorecache: this.state.ignorecache,
+          viewtype: this.state.viewtype,
+          responsetype: this.state.responsetype,
+          inputfile: this.state.inputfile,
+          filter: this.state.filter,
+          attachment: document.querySelector('#customFile')
+        }
+      })
+      .then((response) => {
+        console.log(response);
+      }).catch((err)=>{
+          console.log(err);
+      });
   };
   render() {
     return (
       <div>
-        <form>
+        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="col-auto align-items-center">
             <div className="col-sm-10">
               <div className="form-group col-md-3 mb-2">
@@ -53,8 +88,10 @@ class Converter extends Component {
                   type="file"
                   className="form-control-file h5"
                   id="customFile"
-                  onChange={this.uploadFile}
+                  name="attachment"
+              /*     onChange={this.uploadFile(this.value)} */
                 ></input>
+                <input type="submit"></input>
               </div>
             </div>
           </div>
