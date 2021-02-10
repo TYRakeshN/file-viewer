@@ -1,14 +1,22 @@
 import React, { Component } from "react";
-import axios from "axios";
+/* import axios from "axios"; */
+import image from './data/TyImg.png';
+import pdf from './data/Typdf.pdf';
+import text from './data/Tydoc.txt';
+import FileViewer from 'react-file-viewer';
 class Converter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ignorecache: true,
+      /* ignorecache: true,
       viewtype: "hview",
       responsetype: "html",
       inputfile: "",
-      filter: "doc-pdf"
+      filter: "doc-pdf", */
+      fileUploaded:false,
+      showImage:false,
+      showPdf:false,
+      showText:false
     };
   }
 
@@ -34,35 +42,71 @@ class Converter extends Component {
         });
     }
   }; */
-  handleSubmit = (event) => {
-      //console.log(this.state);
+/*   handleSubmit = (event) => {
+    //console.log(this.state);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    };
     event.preventDefault();
     console.log("handle submit");
-    axios('https://docsconverter.demo.thinkfree.com/hermes/convert.hs', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        body: {
-          ignorecache: this.state.ignorecache,
-          viewtype: this.state.viewtype,
-          responsetype: this.state.responsetype,
-          inputfile: this.state.inputfile,
-          filter: this.state.filter,
-          attachment: document.querySelector('#customFile')
-        }
+    axios.post("https://docsconverter.demo.thinkfree.com/hermes/convert.hs", config, {
+        ignorecache: this.state.ignorecache,
+        viewtype: this.state.viewtype,
+        responsetype: this.state.responsetype,
+        inputfile: this.state.inputfile,
+        filter: this.state.filter,
+        attachment: document.querySelector("#customFile"),
       })
       .then((response) => {
         //document.getElementsByTagName('body')[0].innerHTML(response.getElementsByTagName('a')[0]);
         console.log(response);
-      }).catch((err)=>{
-          console.log(err);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-  };
+  }; */
+  fileChange=()=>{
+    this.setState({fileUploaded:true})
+  }
+  convertToText=()=>{
+    if(this.state.fileUploaded){
+        this.setState({showText:true});
+        this.setState({showImage:false});
+        this.setState({showPdf:false})
+          }else{
+              alert("pls upload file");
+          }
+  }
+  convertToPdf=()=>{
+      if(this.state.fileUploaded){
+    this.setState({showPdf:true});
+    this.setState({showImage:false});
+    this.setState({showText:false});
+      }else{
+          alert("pls upload file");
+      }
+  }
+  convertToImage=()=>{
+    if(this.state.fileUploaded){
+   this.setState({showImage:true});
+   this.setState({showPdf:false});
+   this.setState({showText:false});
+}else{
+    alert("pls upload file");
+}
+  }
+  convertToText=()=>{
+
+  }
   render() {
     return (
+        <>
       <div>
-        <form encType="multipart/form-data">
+        <form encType="multipart/form-data" >
           <div className="col-auto align-items-center">
             <div className="col-sm-10">
               <div className="form-group col-md-3 mb-2">
@@ -89,10 +133,16 @@ class Converter extends Component {
                   className="form-control-file h5"
                   id="customFile"
                   name="attachment"
-              /*     onChange={this.uploadFile(this.value)} */
+                  onChange={this.fileChange}
+                  /*     onChange={this.uploadFile(this.value)} */
                 ></input>
-                <input type="submit" onClick={this.handleSubmit}></input>
+              {/*   <input type="submit"></input> */}
               </div>
+              <input className="p-1  h5" type="button" value="View Uploaded" onClick={this.convertToHtml}></input> 
+              <input className="p-1 pr-2 ml-5  h5"  type="button" value="PDF" onClick={this.convertToPdf}></input>
+              <input className="p-1  mr-2 h5"  type="button" value="IMAGE" onClick={this.convertToImage}></input>
+              
+              <input className="p-1  ml-5 h5" type="button"  value="Dowload" onClick={this.convertToText}></input>              
             </div>
           </div>
         </form>
@@ -101,6 +151,23 @@ class Converter extends Component {
           <p> Supported formats: Word, PowerPoint, Excel</p>
         </details>
       </div>
+      <hr></hr>
+      <div id="show-view" className="container" >
+      { this.state.showImage 
+        ? 
+        <FileViewer
+        fileType='png'
+        filePath={image}
+        /> : null}
+        { this.state.showPdf 
+            ? 
+            <FileViewer
+            fileType='pdf'
+            filePath={pdf}
+            /> : null}
+           
+      </div>
+      </>
     );
   }
 }
