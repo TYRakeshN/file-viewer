@@ -16,8 +16,8 @@ class Converter extends Component {
       fileUploaded:false,
       showImage:false,
       showPdf:false,
-      showDoc:false
-
+      showDoc:false,
+   /*   file:null */
     };
   }
 
@@ -70,8 +70,12 @@ class Converter extends Component {
         console.log(err);
       });
   }; */
-  fileChange=()=>{
+  fileChange=(e)=>{
+    this.setState({showDoc:false});
+    this.setState({showImage:false});
+    this.setState({showPdf:false})
     this.setState({fileUploaded:true})
+    /* this.setState({file:e.target.value}); */
   }
   showFileLoaded=()=>{
     if(this.state.fileUploaded){
@@ -112,14 +116,14 @@ class Converter extends Component {
             <div className="col-sm-10">
               <div className="form-group col-md-3 mb-2">
                 <label className="h4" htmlFor="customFile">
-                  Try Demonstration |
+                  DocsConverter
                 </label>
               </div>
               <div className="form-group col-md-3 mb-2">
-                <input name="ignorecache" type="hidden" value="true"></input>
+            {   /*  <input name="ignorecache" type="hidden" value="true"></input>
                 <input name="viewtype" type="hidden" value="hview"></input>
                 <input name="responsetype" type="hidden" value="html"></input>
-                <input name="inputfile" type="hidden" value=""></input>
+    <input name="inputfile" type="hidden" value=""></input> */}
                 <input
                   id="filter_app"
                   name="filter"
@@ -139,15 +143,15 @@ class Converter extends Component {
                 ></input>
               {/*   <input type="submit"></input> */}
               </div>
-              <input className="p-1  h5" type="button" value="View Uploaded" onClick={this.showFileLoaded}></input> 
-              <input className="p-1 pr-2 ml-5  h5"  type="button" value="PDF" onClick={this.convertToPdf}></input>
-              <input className="p-1 ml-5  mr-2 m-1 h5"  type="button" value="IMAGE" onClick={this.convertToImage}></input>
+          {   /*  <input className="p-1  h5" type="button" value="View Uploaded" onClick={this.showFileLoaded}></input>  */}
+              <input className="btn btn-outline-dark btn-lg p-2 pr-2 ml-5  m-1 "  type="button" value="Convert To PDF" onClick={this.convertToPdf}></input>
+              <input className="btn btn-outline-dark btn-lg p-2 ml-5  mr-2 m-1 "  type="button" value="Convert To IMAGE" onClick={this.convertToImage}></input>
               
              
             </div>
           </div>
         </form>
-        <details className="h6 pt-4">
+        <details className="h6 pt-4 " style={{color:'white'}}>
           <summary>File Formats</summary>
           <p> Supported formats: Word, PowerPoint, Excel</p>
         </details>
